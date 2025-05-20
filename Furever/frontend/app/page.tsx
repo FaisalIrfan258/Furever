@@ -4,6 +4,7 @@ import Statistics from "@/components/home/statistics"
 import QuickAccess from "@/components/home/quick-access"
 import About from "@/components/home/about"
 import Testimonials from "@/components/home/testimonials"
+import ChatBot from "@/components/home/chat-bot"
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <QuickAccess />
       <About />
       <Testimonials />
+      <ChatBot />
     </div>
   )
 }

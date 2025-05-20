@@ -2,7 +2,7 @@ import axios from "axios"
 
 // Create an axios instance with default config
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // This would be your API base URL in production
+  baseURL: "https://furever-wzh5.onrender.com/api", // This would be your API base URL in production
   headers: {
     "Content-Type": "application/json",
   },
@@ -61,11 +61,11 @@ export const petsAPI = {
 
 // Adoptions API
 export const adoptionsAPI = {
-  submitApplication: (applicationData: any) => api.post("/adoptions", applicationData),
-  getUserApplications: () => api.get("/adoptions/me"),
-  getShelterApplications: () => api.get("/adoptions/shelter"),
-  getApplicationById: (id: string) => api.get(`/adoptions/${id}`),
-  updateApplicationStatus: (id: string, statusData: any) => api.put(`/adoptions/${id}/status`, statusData),
+  submitApplication: (applicationData: any) => api.post("/adoption", applicationData),
+  getUserApplications: () => api.get("/adoption/me"),
+  getShelterApplications: () => api.get("/adoption/shelter"),
+  getApplicationById: (id: string) => api.get(`/adoption/${id}`),
+  updateApplicationStatus: (id: string, statusData: any) => api.put(`/adoption/${id}/status`, statusData),
 }
 
 // Lost & Found API
@@ -103,7 +103,7 @@ export const donationsAPI = {
 
 // Chatbot API
 export const chatbotAPI = {
-  sendMessage: (message: string) => api.post("/chatbot", { message }),
+  sendMessage: (message: string) => api.post("/chatbot/chat", { message }),
   getConversationHistory: () => api.get("/chatbot/history"),
 }
 

@@ -9,7 +9,7 @@ const testimonials = [
     author: {
       name: "Sarah Johnson",
       role: "Pet Parent",
-      imageUrl: "/placeholder.svg?height=40&width=40",
+      imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150",
       initials: "SJ",
     },
   },
@@ -20,7 +20,7 @@ const testimonials = [
     author: {
       name: "Michael Rodriguez",
       role: "Shelter Manager",
-      imageUrl: "/placeholder.svg?height=40&width=40",
+      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150",
       initials: "MR",
     },
   },
@@ -31,7 +31,7 @@ const testimonials = [
     author: {
       name: "Emily Chen",
       role: "Pet Owner",
-      imageUrl: "/placeholder.svg?height=40&width=40",
+      imageUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150",
       initials: "EC",
     },
   },
@@ -39,15 +39,15 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:text-center mb-16">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Success Stories</h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+    <section className="py-12 sm:py-16 bg-gray-50">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:text-center mb-10 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">Success Stories</h2>
+          <p className="mt-4 sm:mt-6 text-lg leading-8 text-gray-600">
             Hear from the people and pets whose lives have been changed through Furever.
           </p>
         </div>
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto grid max-w-md grid-cols-1 gap-y-8 gap-x-8 sm:max-w-lg md:max-w-2xl md:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {testimonials.map((testimonial) => (
             <Card key={testimonial.id} className="h-full flex flex-col">
               <CardHeader className="pb-0">

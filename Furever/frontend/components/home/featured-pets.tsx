@@ -6,99 +6,64 @@ import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import PetCard from "@/components/pets/pet-card"
 import type { Pet } from "@/types/pet"
-
-// Mock data for featured pets
-const mockFeaturedPets: Pet[] = [
-  {
-    id: "1",
-    name: "Buddy",
-    species: "Dog",
-    breed: "Golden Retriever",
-    age: 2,
-    gender: "Male",
-    size: "Large",
-    description: "Friendly and energetic Golden Retriever looking for an active family.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter1",
-    shelterName: "Happy Paws Shelter",
-    location: "San Francisco, CA",
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    name: "Whiskers",
-    species: "Cat",
-    breed: "Siamese",
-    age: 3,
-    gender: "Female",
-    size: "Medium",
-    description: "Elegant and affectionate Siamese cat who loves to cuddle.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter2",
-    shelterName: "Feline Friends",
-    location: "Los Angeles, CA",
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "3",
-    name: "Rex",
-    species: "Dog",
-    breed: "German Shepherd",
-    age: 1,
-    gender: "Male",
-    size: "Large",
-    description: "Intelligent and loyal German Shepherd puppy, great with kids.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter1",
-    shelterName: "Happy Paws Shelter",
-    location: "San Francisco, CA",
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "4",
-    name: "Luna",
-    species: "Cat",
-    breed: "Maine Coon",
-    age: 2,
-    gender: "Female",
-    size: "Large",
-    description: "Majestic Maine Coon with a gentle personality and fluffy coat.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter3",
-    shelterName: "Kitty Haven",
-    location: "Seattle, WA",
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "5",
-    name: "Max",
-    species: "Dog",
-    breed: "Beagle",
-    age: 4,
-    gender: "Male",
-    size: "Medium",
-    description: "Playful Beagle who loves outdoor adventures and snuggles.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter2",
-    shelterName: "Feline Friends",
-    location: "Los Angeles, CA",
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-]
+import { petsAPI } from "@/lib/api"
 
 export default function FeaturedPets() {
   const [featuredPets, setFeaturedPets] = useState<Pet[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const petsToShow = 3
+  const [petsToShow, setPetsToShow] = useState(3)
+  
+  // Determine how many pets to show based on screen size
+  const getResponsiveCardCount = () => {
+    if (typeof window === 'undefined') return 3 // Default for SSR
+    return window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3
+  }
+
+  const fetchLatestPets = async () => {
+    try {
+      setIsLoading(true)
+      // Get the latest pets by sorting by createdAt in descending order
+      const response = await petsAPI.getAllPets({
+        limit: 10, // Fetch a few more than we need
+        sort: "-createdAt" // Sort by newest first
+      })
+      
+      // Use data from the new API response format
+      if (response.data.data && response.data.data.length > 0) {
+        setFeaturedPets(response.data.data)
+      }
+      setError(null)
+    } catch (err) {
+      console.error("Error fetching featured pets:", err)
+      setError("Failed to load featured pets")
+      // Fallback to empty array
+      setFeaturedPets([])
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    // In a real app, this would be an API call
-    setFeaturedPets(mockFeaturedPets)
+    fetchLatestPets()
+    
+    // Update pets to show based on screen size
+    const updatePetsToShow = () => {
+      setPetsToShow(getResponsiveCardCount())
+    }
+    
+    // Initialize petsToShow
+    updatePetsToShow()
+    
+    // Handle responsive petsToShow value on window resize
+    const handleResize = () => {
+      updatePetsToShow()
+      setCurrentIndex(0) // Reset index on resize
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const handlePrevious = () => {
@@ -112,28 +77,52 @@ export default function FeaturedPets() {
   }
 
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Featured Pets</h2>
+    <section className="bg-gray-50 py-12 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">Featured Pets</h2>
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" onClick={handlePrevious} disabled={featuredPets.length <= petsToShow}>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={handlePrevious} 
+              disabled={isLoading || featuredPets.length <= petsToShow}
+            >
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon" onClick={handleNext} disabled={featuredPets.length <= petsToShow}>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={handleNext} 
+              disabled={isLoading || featuredPets.length <= petsToShow}
+            >
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-          {featuredPets.slice(currentIndex, currentIndex + petsToShow).map((pet) => (
-            <PetCard key={pet.id} pet={pet} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-16">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center py-16">
+            <p className="text-gray-500">{error}</p>
+          </div>
+        ) : featuredPets.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-gray-500">No featured pets available at the moment.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredPets.slice(currentIndex, currentIndex + petsToShow).map((pet) => (
+              <PetCard key={pet._id || pet.id} pet={pet} />
+            ))}
+          </div>
+        )}
 
-        <div className="mt-10 text-center">
-          <Button asChild>
+        <div className="mt-8 sm:mt-10 text-center">
+          <Button asChild className="w-full sm:w-auto">
             <Link href="/pets">View All Pets</Link>
           </Button>
         </div>

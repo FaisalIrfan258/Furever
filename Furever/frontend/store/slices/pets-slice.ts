@@ -34,9 +34,13 @@ export const fetchPets = createAsyncThunk("pets/fetchPets", async (filters: any,
   try {
     const response = await petsAPI.getAllPets(filters)
     return {
-      pets: response.data.pets,
+      pets: response.data.data,
       count: response.data.count,
-      pagination: response.data.pagination,
+      pagination: {
+        page: response.data.pagination.page,
+        limit: response.data.pagination.limit,
+        totalPages: response.data.pagination.pages
+      }
     }
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || "Failed to fetch pets")
@@ -56,7 +60,7 @@ export const fetchFeaturedPets = createAsyncThunk("pets/fetchFeaturedPets", asyn
   try {
     // Featured pets could be a special endpoint or just a filter
     const response = await petsAPI.getAllPets({ featured: true, limit: 5 })
-    return response.data.pets
+    return response.data.data || response.data.pets || []
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || "Failed to fetch featured pets")
   }
@@ -155,18 +159,18 @@ const petsSlice = createSlice({
       })
       // Update Pet
       .addCase(updatePet.fulfilled, (state, action) => {
-        const index = state.pets.findIndex((pet) => pet.id === action.payload.id)
+        const index = state.pets.findIndex((pet) => pet._id === action.payload._id)
         if (index !== -1) {
           state.pets[index] = action.payload
         }
-        if (state.currentPet?.id === action.payload.id) {
+        if (state.currentPet?._id === action.payload._id) {
           state.currentPet = action.payload
         }
       })
       // Delete Pet
       .addCase(deletePet.fulfilled, (state, action) => {
-        state.pets = state.pets.filter((pet) => pet.id !== action.payload)
-        if (state.currentPet?.id === action.payload) {
+        state.pets = state.pets.filter((pet) => pet._id !== action.payload)
+        if (state.currentPet?._id === action.payload) {
           state.currentPet = null
         }
       })

@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge"
 
 const publicNavigation = [
   { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
   { name: "Pets", href: "/pets" },
   { name: "Lost & Found", href: "/lost-found" },
   { name: "Rescue Operations", href: "/rescues" },

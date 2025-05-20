@@ -16,137 +16,137 @@ import { fetchPets } from "@/store/slices/pets-slice"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 
-// Mock data for pets
-const mockPets = [
-  {
-    _id: "1",
-    name: "Buddy",
-    species: "Dog",
-    breed: "Golden Retriever",
-    age: 2,
-    gender: "Male",
-    size: "Large",
-    description: "Friendly and energetic Golden Retriever looking for an active family.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter1",
-    shelterName: "Happy Paws Shelter",
-    location: { city: "San Francisco", state: "CA" },
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    _id: "2",
-    name: "Whiskers",
-    species: "Cat",
-    breed: "Siamese",
-    age: 3,
-    gender: "Female",
-    size: "Medium",
-    description: "Elegant and affectionate Siamese cat who loves to cuddle.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter2",
-    shelterName: "Feline Friends",
-    location: { city: "Los Angeles", state: "CA" },
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    _id: "3",
-    name: "Rex",
-    species: "Dog",
-    breed: "German Shepherd",
-    age: 1,
-    gender: "Male",
-    size: "Large",
-    description: "Intelligent and loyal German Shepherd puppy, great with kids.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter1",
-    shelterName: "Happy Paws Shelter",
-    location: { city: "San Francisco", state: "CA" },
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    _id: "4",
-    name: "Luna",
-    species: "Cat",
-    breed: "Maine Coon",
-    age: 2,
-    gender: "Female",
-    size: "Large",
-    description: "Majestic Maine Coon with a gentle personality and fluffy coat.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter3",
-    shelterName: "Kitty Haven",
-    location: { city: "Seattle", state: "WA" },
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    _id: "5",
-    name: "Max",
-    species: "Dog",
-    breed: "Beagle",
-    age: 4,
-    gender: "Male",
-    size: "Medium",
-    description: "Playful Beagle who loves outdoor adventures and snuggles.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter2",
-    shelterName: "Feline Friends",
-    location: { city: "Los Angeles", state: "CA" },
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    _id: "6",
-    name: "Bella",
-    species: "Dog",
-    breed: "Labrador Retriever",
-    age: 3,
-    gender: "Female",
-    size: "Large",
-    description: "Sweet and gentle Labrador who loves water and playing fetch.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter1",
-    shelterName: "Happy Paws Shelter",
-    location: { city: "San Francisco", state: "CA" },
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    _id: "7",
-    name: "Oliver",
-    species: "Cat",
-    breed: "Tabby",
-    age: 1,
-    gender: "Male",
-    size: "Small",
-    description: "Curious and playful tabby kitten who loves to explore.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter3",
-    shelterName: "Kitty Haven",
-    location: { city: "Seattle", state: "WA" },
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    _id: "8",
-    name: "Charlie",
-    species: "Dog",
-    breed: "Poodle",
-    age: 5,
-    gender: "Male",
-    size: "Medium",
-    description: "Intelligent and hypoallergenic Poodle with a gentle temperament.",
-    images: ["/placeholder.svg?height=300&width=400"],
-    shelterId: "shelter2",
-    shelterName: "Feline Friends",
-    location: { city: "Los Angeles", state: "CA" },
-    status: "available",
-    createdAt: new Date().toISOString(),
-  },
-]
+// // Mock data for pets
+// const mockPets = [
+//   {
+//     _id: "1",
+//     name: "Buddy",
+//     species: "Dog",
+//     breed: "Golden Retriever",
+//     age: 2,
+//     gender: "Male",
+//     size: "Large",
+//     description: "Friendly and energetic Golden Retriever looking for an active family.",
+//     images: ["/placeholder.svg?height=300&width=400"],
+//     shelterId: "shelter1",
+//     shelterName: "Happy Paws Shelter",
+//     location: { city: "San Francisco", state: "CA" },
+//     status: "available",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     _id: "2",
+//     name: "Whiskers",
+//     species: "Cat",
+//     breed: "Siamese",
+//     age: 3,
+//     gender: "Female",
+//     size: "Medium",
+//     description: "Elegant and affectionate Siamese cat who loves to cuddle.",
+//     images: ["/placeholder.svg?height=300&width=400"],
+//     shelterId: "shelter2",
+//     shelterName: "Feline Friends",
+//     location: { city: "Los Angeles", state: "CA" },
+//     status: "available",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     _id: "3",
+//     name: "Rex",
+//     species: "Dog",
+//     breed: "German Shepherd",
+//     age: 1,
+//     gender: "Male",
+//     size: "Large",
+//     description: "Intelligent and loyal German Shepherd puppy, great with kids.",
+//     images: ["/placeholder.svg?height=300&width=400"],
+//     shelterId: "shelter1",
+//     shelterName: "Happy Paws Shelter",
+//     location: { city: "San Francisco", state: "CA" },
+//     status: "available",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     _id: "4",
+//     name: "Luna",
+//     species: "Cat",
+//     breed: "Maine Coon",
+//     age: 2,
+//     gender: "Female",
+//     size: "Large",
+//     description: "Majestic Maine Coon with a gentle personality and fluffy coat.",
+//     images: ["/placeholder.svg?height=300&width=400"],
+//     shelterId: "shelter3",
+//     shelterName: "Kitty Haven",
+//     location: { city: "Seattle", state: "WA" },
+//     status: "available",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     _id: "5",
+//     name: "Max",
+//     species: "Dog",
+//     breed: "Beagle",
+//     age: 4,
+//     gender: "Male",
+//     size: "Medium",
+//     description: "Playful Beagle who loves outdoor adventures and snuggles.",
+//     images: ["/placeholder.svg?height=300&width=400"],
+//     shelterId: "shelter2",
+//     shelterName: "Feline Friends",
+//     location: { city: "Los Angeles", state: "CA" },
+//     status: "available",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     _id: "6",
+//     name: "Bella",
+//     species: "Dog",
+//     breed: "Labrador Retriever",
+//     age: 3,
+//     gender: "Female",
+//     size: "Large",
+//     description: "Sweet and gentle Labrador who loves water and playing fetch.",
+//     images: ["/placeholder.svg?height=300&width=400"],
+//     shelterId: "shelter1",
+//     shelterName: "Happy Paws Shelter",
+//     location: { city: "San Francisco", state: "CA" },
+//     status: "available",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     _id: "7",
+//     name: "Oliver",
+//     species: "Cat",
+//     breed: "Tabby",
+//     age: 1,
+//     gender: "Male",
+//     size: "Small",
+//     description: "Curious and playful tabby kitten who loves to explore.",
+//     images: ["/placeholder.svg?height=300&width=400"],
+//     shelterId: "shelter3",
+//     shelterName: "Kitty Haven",
+//     location: { city: "Seattle", state: "WA" },
+//     status: "available",
+//     createdAt: new Date().toISOString(),
+//   },
+//   {
+//     _id: "8",
+//     name: "Charlie",
+//     species: "Dog",
+//     breed: "Poodle",
+//     age: 5,
+//     gender: "Male",
+//     size: "Medium",
+//     description: "Intelligent and hypoallergenic Poodle with a gentle temperament.",
+//     images: ["/placeholder.svg?height=300&width=400"],
+//     shelterId: "shelter2",
+//     shelterName: "Feline Friends",
+//     location: { city: "Los Angeles", state: "CA" },
+//     status: "available",
+//     createdAt: new Date().toISOString(),
+//   },
+// ]
 
 export default function PetsPage() {
   const searchParams = useSearchParams()
@@ -157,7 +157,7 @@ export default function PetsPage() {
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   // Filter states
-  const [species, setSpecies] = useState(searchParams.get("species") || "all")
+  const [type, setType] = useState(searchParams.get("type") || "all")
   const [breed, setBreed] = useState(searchParams.get("breed") || "")
   const [ageRange, setAgeRange] = useState<[number, number]>([0, 15])
   const [gender, setGender] = useState(searchParams.get("gender") || "all")
@@ -170,7 +170,7 @@ export default function PetsPage() {
 
   useEffect(() => {
     // Parse query parameters
-    const speciesParam = searchParams.get("species") || "all"
+    const typeParam = searchParams.get("type") || "all"
     const breedParam = searchParams.get("breed") || ""
     const genderParam = searchParams.get("gender") || "all"
     const sizeParam = searchParams.get("size") || "all"
@@ -178,7 +178,7 @@ export default function PetsPage() {
     const pageParam = Number.parseInt(searchParams.get("page") || "1", 10)
 
     // Update state with query parameters
-    setSpecies(speciesParam)
+    setType(typeParam)
     setBreed(breedParam)
     setGender(genderParam)
     setSize(sizeParam)
@@ -191,16 +191,16 @@ export default function PetsPage() {
       limit: 9,
     }
 
-    if (speciesParam !== "all") filters.species = speciesParam
+    if (typeParam !== "all") filters.type = typeParam
     if (breedParam) filters.breed = breedParam
     if (genderParam !== "all") filters.gender = genderParam
     if (sizeParam !== "all") filters.size = sizeParam
     if (locationParam) filters.location = locationParam
 
     // Add compatibility filters
-    if (goodWithChildren) filters.goodWith = "children"
-    if (goodWithDogs) filters.goodWith = "dogs"
-    if (goodWithCats) filters.goodWith = "cats"
+    if (goodWithChildren) filters["behavior.goodWith.children"] = true
+    if (goodWithDogs) filters["behavior.goodWith.dogs"] = true
+    if (goodWithCats) filters["behavior.goodWith.cats"] = true
 
     // Fetch pets with filters
     dispatch(fetchPets(filters))
@@ -209,7 +209,7 @@ export default function PetsPage() {
   const applyFilters = () => {
     // Update URL with filters
     const params = new URLSearchParams()
-    if (species !== "all") params.set("species", species)
+    if (type !== "all") params.set("type", type)
     if (breed) params.set("breed", breed)
     if (gender !== "all") params.set("gender", gender)
     if (size !== "all") params.set("size", size)
@@ -225,7 +225,7 @@ export default function PetsPage() {
   }
 
   const resetFilters = () => {
-    setSpecies("all")
+    setType("all")
     setBreed("")
     setAgeRange([0, 15])
     setGender("all")
@@ -262,13 +262,13 @@ export default function PetsPage() {
 
               <div className="space-y-6">
                 <div>
-                  <Label htmlFor="species">Species</Label>
-                  <Select value={species} onValueChange={setSpecies}>
-                    <SelectTrigger id="species">
-                      <SelectValue placeholder="All species" />
+                  <Label htmlFor="type">Pet Type</Label>
+                  <Select value={type} onValueChange={setType}>
+                    <SelectTrigger id="type">
+                      <SelectValue placeholder="All types" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All species</SelectItem>
+                      <SelectItem value="all">All types</SelectItem>
                       <SelectItem value="dog">Dogs</SelectItem>
                       <SelectItem value="cat">Cats</SelectItem>
                       <SelectItem value="bird">Birds</SelectItem>
@@ -285,7 +285,13 @@ export default function PetsPage() {
                 <div>
                   <Label>Age Range (years)</Label>
                   <div className="pt-2 px-2">
-                    <Slider defaultValue={[0, 15]} max={15} step={1} value={ageRange} onValueChange={setAgeRange} />
+                    <Slider 
+                      defaultValue={[0, 15]} 
+                      max={15} 
+                      step={1} 
+                      value={ageRange} 
+                      onValueChange={(value) => setAgeRange(value as [number, number])} 
+                    />
                     <div className="flex justify-between mt-2 text-sm text-gray-500">
                       <span>{ageRange[0]} years</span>
                       <span>{ageRange[1]} years</span>
@@ -401,8 +407,8 @@ export default function PetsPage() {
                   Filters
                 </Button>
                 <p className="text-sm text-gray-500">
-                  Showing <span className="font-medium">{pets.length}</span> of{" "}
-                  <span className="font-medium">{totalPets}</span> pets
+                  Showing <span className="font-medium">{pets?.length || 0}</span> of{" "}
+                  <span className="font-medium">{totalPets || 0}</span> pets
                 </p>
               </div>
               <div className="flex gap-2">
@@ -428,7 +434,7 @@ export default function PetsPage() {
                 <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" />
                 <p className="mt-4 text-gray-500">Loading pets...</p>
               </div>
-            ) : pets.length === 0 ? (
+            ) : pets?.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-500">No pets found matching your criteria.</p>
                 <Button variant="link" onClick={resetFilters}>
@@ -444,7 +450,7 @@ export default function PetsPage() {
                       : "space-y-6"
                   }
                 >
-                  {pets.map((pet) =>
+                  {pets?.map((pet) =>
                     viewMode === "grid" ? (
                       <PetCard key={pet._id} pet={pet} />
                     ) : (
@@ -453,7 +459,7 @@ export default function PetsPage() {
                           <div className="flex flex-col sm:flex-row">
                             <div className="sm:w-1/3">
                               <img
-                                src={pet.images[0] || "/placeholder.svg?height=300&width=400"}
+                                src={pet.photos && pet.photos.length > 0 ? pet.photos[0].url : "/placeholder.svg?height=300&width=400"}
                                 alt={pet.name}
                                 className="h-48 w-full object-cover object-center sm:h-full"
                               />
@@ -464,18 +470,20 @@ export default function PetsPage() {
                                   <h3 className="text-lg font-semibold text-gray-900">{pet.name}</h3>
                                   <p className="mt-1 text-sm text-gray-500">{pet.breed}</p>
                                 </div>
-                                <Badge variant={pet.species === "Dog" ? "default" : "secondary"}>{pet.species}</Badge>
+                                <Badge variant={pet.type === "dog" ? "default" : "secondary"}>
+                                  {pet.type.charAt(0).toUpperCase() + pet.type.slice(1)}
+                                </Badge>
                               </div>
                               <div className="mt-4 flex items-center text-sm text-gray-500">
                                 <MapPin className="mr-1 h-4 w-4" />
-                                {pet.location.city}, {pet.location.state}
+                                {pet.location.address.city}, {pet.location.address.state}
                               </div>
                               <p className="mt-4 text-sm text-gray-600 line-clamp-2">{pet.description}</p>
                               <div className="mt-4 grid grid-cols-4 gap-2 text-xs">
                                 <div className="bg-gray-100 p-2 rounded-md text-center">
                                   <span className="block font-medium">Age</span>
                                   <span>
-                                    {pet.age} {pet.age === 1 ? "year" : "years"}
+                                    {pet.age.value} {pet.age.value === 1 ? pet.age.unit.slice(0, -1) : pet.age.unit}
                                   </span>
                                 </div>
                                 <div className="bg-gray-100 p-2 rounded-md text-center">
@@ -488,7 +496,7 @@ export default function PetsPage() {
                                 </div>
                                 <div className="bg-gray-100 p-2 rounded-md text-center">
                                   <span className="block font-medium">Shelter</span>
-                                  <span className="truncate">{pet.shelterName}</span>
+                                  <span className="truncate">{pet.shelter.name}</span>
                                 </div>
                               </div>
                               <div className="mt-6">
@@ -507,15 +515,15 @@ export default function PetsPage() {
                 <div className="mt-8 flex justify-center">
                   <Button
                     variant="outline"
-                    disabled={pagination.currentPage === 1}
-                    onClick={() => handlePageChange(pagination.currentPage - 1)}
+                    disabled={pagination?.page === 1}
+                    onClick={() => handlePageChange(pagination?.page - 1)}
                   >
                     Previous
                   </Button>
                   <Button
                     variant="outline"
-                    disabled={pagination.currentPage === pagination.totalPages}
-                    onClick={() => handlePageChange(pagination.currentPage + 1)}
+                    disabled={pagination?.page === pagination?.totalPages}
+                    onClick={() => handlePageChange(pagination?.page + 1)}
                   >
                     Next
                   </Button>

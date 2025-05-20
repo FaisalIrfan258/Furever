@@ -38,6 +38,8 @@ export const login = createAsyncThunk(
     try {
       const response = await authAPI.login(credentials)
       localStorage.setItem("token", response.data.token)
+      localStorage.setItem("user", JSON.stringify(response.data.user))
+      localStorage.setItem("userResponse", JSON.stringify(response.data))
       return response.data.user
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Login failed")
@@ -49,6 +51,7 @@ export const register = createAsyncThunk("auth/register", async (userData: any, 
   try {
     const response = await authAPI.register(userData)
     localStorage.setItem("token", response.data.token)
+    localStorage.setItem("user", JSON.stringify(response.data.user))
     return response.data.user
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || "Registration failed")
@@ -61,6 +64,7 @@ export const registerShelter = createAsyncThunk(
     try {
       const response = await authAPI.registerShelter(shelterData)
       localStorage.setItem("token", response.data.token)
+      localStorage.setItem("user", JSON.stringify(response.data.user))
       return response.data.user
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Shelter registration failed")
@@ -72,6 +76,8 @@ export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValu
   try {
     await authAPI.logout()
     localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    localStorage.removeItem("userResponse")
     return true
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || "Logout failed")

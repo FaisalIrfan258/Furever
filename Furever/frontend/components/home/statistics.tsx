@@ -13,8 +13,8 @@ type Statistic = {
   description: string
 }
 
-// Mock statistics data
-const mockStatistics: Statistic[] = [
+// Statistics data
+const statistics: Statistic[] = [
   {
     id: "1",
     name: "Pets Adopted",
@@ -46,13 +46,9 @@ const mockStatistics: Statistic[] = [
 ]
 
 export default function Statistics() {
-  const [statistics, setStatistics] = useState<Statistic[]>([])
   const [counts, setCounts] = useState<number[]>([0, 0, 0, 0])
 
   useEffect(() => {
-    // In a real app, this would be an API call
-    setStatistics(mockStatistics)
-
     // Animate the counters
     const duration = 2000 // 2 seconds
     const interval = 20 // Update every 20ms
@@ -66,9 +62,9 @@ export default function Statistics() {
       const progress = currentStep / steps
 
       if (currentStep <= steps) {
-        setCounts(mockStatistics.map((stat) => Math.floor(stat.value * progress)))
+        setCounts(statistics.map((stat) => Math.floor(stat.value * progress)))
       } else {
-        setCounts(mockStatistics.map((stat) => stat.value))
+        setCounts(statistics.map((stat) => stat.value))
         clearInterval(timer)
       }
     }, interval)
@@ -77,17 +73,17 @@ export default function Statistics() {
   }, [])
 
   return (
-    <section className="py-16">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center mb-16">
+    <section className="py-12 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 md:text-4xl text-center mb-10 sm:mb-16">
           Making a Difference Together
         </h2>
-        <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-4">
+        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 sm:gap-y-16 text-center">
           {statistics.map((stat, index) => (
-            <div key={stat.id} className="mx-auto flex max-w-xs flex-col gap-y-4">
+            <div key={stat.id} className="mx-auto flex max-w-xs flex-col gap-y-3">
               <dt className="text-base leading-7 text-gray-600">{stat.name}</dt>
-              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                <div className="flex justify-center mb-4">{stat.icon}</div>
+              <dd className="order-first text-2xl sm:text-3xl font-semibold tracking-tight text-gray-900">
+                <div className="flex justify-center mb-3 sm:mb-4">{stat.icon}</div>
                 {counts[index].toLocaleString()}
               </dd>
               <div className="text-sm text-gray-500">{stat.description}</div>
