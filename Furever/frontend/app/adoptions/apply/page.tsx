@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -40,7 +40,18 @@ const adoptionFormSchema = z.object({
 
 type AdoptionFormValues = z.infer<typeof adoptionFormSchema>
 
-export default function AdoptionApplicationPage() {
+// Loading component for Suspense fallback
+function AdoptionLoadingState() {
+  return (
+    <div className="container mx-auto py-10 px-4 flex justify-center items-center">
+      <Loader2 className="h-8 w-8 animate-spin mr-2" />
+      <p>Loading application form...</p>
+    </div>
+  )
+}
+
+// Main component that safely uses useSearchParams
+function AdoptionForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const petId = searchParams.get("petId")
@@ -540,5 +551,14 @@ export default function AdoptionApplicationPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+// Main page component that wraps the form in Suspense
+export default function AdoptionApplicationPage() {
+  return (
+    <Suspense fallback={<AdoptionLoadingState />}>
+      <AdoptionForm />
+    </Suspense>
   )
 } 
