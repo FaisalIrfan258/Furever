@@ -15,8 +15,35 @@ import {
   PawPrint, Heart, Search, Filter, Clock
 } from "lucide-react"
 
+interface RescueLocation {
+  coordinates: number[];
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+}
+
+interface RescueOperation {
+  _id: string;
+  animalType: string;
+  condition: string;
+  description: string;
+  photos: string[];
+  location: RescueLocation;
+  urgencyLevel: "low" | "medium" | "high" | "emergency";
+  status: string;
+  assignedTo?: string;
+  user?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function RescuesPage() {
-  const [rescues, setRescues] = useState([])
+  const [rescues, setRescues] = useState<RescueOperation[]>([])
+  const [myRescues, setMyRescues] = useState<RescueOperation[]>([])
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [activeTab, setActiveTab] = useState("browse")
@@ -27,8 +54,33 @@ export default function RescuesPage() {
   })
 
   useEffect(() => {
-    fetchRescues()
-  }, [filters])
+    if (activeTab === "browse") {
+      fetchRescues()
+    } else if (activeTab === "my-rescues") {
+      fetchMyRescues()
+    }
+  }, [filters, activeTab])
+
+  const fetchMyRescues = async () => {
+    setLoading(true)
+    try {
+      const response = await rescueAPI.getUserRescues()
+      if (response.data && response.data.data) {
+        setMyRescues(response.data.data)
+      } else {
+        setMyRescues([])
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch your rescue reports. Please try again.",
+        variant: "destructive"
+      })
+      setMyRescues([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const fetchRescues = async () => {
     setLoading(true)
@@ -80,7 +132,7 @@ export default function RescuesPage() {
             country: formData.get("country") as string,
           }
         },
-        urgencyLevel: "High" // Default to high urgency
+        urgencyLevel: "high" // Default to high urgency
       }
 
       const response = await rescueAPI.createRescueOperation(data)
@@ -160,16 +212,20 @@ export default function RescuesPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="bg-gradient-to-r from-emerald-500 to-blue-500 p-8 rounded-lg mb-8 text-white">
+      <div className="bg-rose-600 p-8 rounded-lg mb-8 text-white">
         <h1 className="text-4xl font-bold mb-2">Rescue Operations</h1>
         <p className="text-xl">Help save animals in need through coordinated rescue missions</p>
       </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-8">
+        <TabsList className="grid w-full grid-cols-3 mb-8">
           <TabsTrigger value="browse" className="text-lg py-3">
             <Search className="mr-2 h-5 w-5" />
             Browse Rescues
+          </TabsTrigger>
+          <TabsTrigger value="my-rescues" className="text-lg py-3">
+            <Clock className="mr-2 h-5 w-5" />
+            My Rescues
           </TabsTrigger>
           <TabsTrigger value="create" className="text-lg py-3">
             <Heart className="mr-2 h-5 w-5" />
@@ -331,6 +387,84 @@ export default function RescuesPage() {
           )}
         </TabsContent>
         
+        <TabsContent value="my-rescues">
+          {loading ? (
+            <div className="flex justify-center p-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            </div>
+          ) : (
+            <>
+              {myRescues.length === 0 ? (
+                <div className="text-center p-12 bg-gray-50 rounded-lg">
+                  <h3 className="text-xl font-medium mb-2">No rescue reports found</h3>
+                  <p className="text-gray-500">You haven't created any rescue operations yet</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {myRescues.map((rescue: any) => (
+                    <Card key={rescue._id} className="overflow-hidden hover:shadow-lg transition-shadow border-t-4" style={{ borderTopColor: getStatusColor(rescue.status).replace('bg-', '#').replace('-500', '') }}>
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between items-start">
+                          <Badge className={`${getStatusColor(rescue.status)} font-medium mb-2`}>
+                            {rescue.status}
+                          </Badge>
+                          <div className="text-xs text-gray-500">
+                            Created: {new Date(rescue.createdAt).toLocaleDateString()}
+                          </div>
+                        </div>
+                        <CardTitle className="text-xl">Rescue Operation</CardTitle>
+                      </CardHeader>
+                      <CardContent className="pb-2">
+                        <p className="text-gray-600 mb-4 line-clamp-2">{rescue.description}</p>
+                        <div className="text-sm text-gray-600 space-y-1">
+                          <div className="flex items-start">
+                            <PawPrint className="h-4 w-4 mr-2 mt-0.5 text-emerald-500" />
+                            <span>{rescue.animalType}</span>
+                          </div>
+                          <div className="flex items-start">
+                            <MapPin className="h-4 w-4 mr-2 mt-0.5 text-emerald-500" />
+                            <span>{rescue.location.address.city}, {rescue.location.address.state}</span>
+                          </div>
+                          <div className="flex items-start">
+                            <AlertTriangle className="h-4 w-4 mr-2 mt-0.5 text-emerald-500" />
+                            <span>Urgency: {rescue.urgencyLevel}</span>
+                          </div>
+                          {rescue.assignedTo && (
+                            <div className="flex items-start">
+                              <Users className="h-4 w-4 mr-2 mt-0.5 text-emerald-500" />
+                              <span>Assigned to: {rescue.assignedTo}</span>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                      <CardFooter className="flex flex-col gap-2">
+                        {rescue.status === "pending" && (
+                          <Button 
+                            onClick={() => handleUpdateStatus(rescue._id, "In Progress")} 
+                            variant="outline"
+                            className="w-full border-emerald-500 text-emerald-500"
+                          >
+                            Mark as In Progress
+                          </Button>
+                        )}
+                        {rescue.status === "in_progress" && (
+                          <Button 
+                            onClick={() => handleUpdateStatus(rescue._id, "Completed")} 
+                            variant="outline"
+                            className="w-full border-emerald-500 text-emerald-500"
+                          >
+                            Mark as Completed
+                          </Button>
+                        )}
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </TabsContent>
+        
         <TabsContent value="create">
           <Card className="p-6 border-emerald-200 shadow-md">
             <CardHeader className="pb-2">
@@ -409,10 +543,10 @@ export default function RescuesPage() {
                         <SelectValue placeholder="Select urgency level" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Low">Low</SelectItem>
-                        <SelectItem value="Medium">Medium</SelectItem>
-                        <SelectItem value="High">High</SelectItem>
-                        <SelectItem value="Critical">Critical</SelectItem>
+                        <SelectItem value="low">low</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                        <SelectItem value="emergency">Critical</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

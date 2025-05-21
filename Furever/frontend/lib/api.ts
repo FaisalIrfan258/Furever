@@ -70,18 +70,22 @@ export const adoptionsAPI = {
 
 // Lost & Found API
 export const lostFoundAPI = {
-  reportLostPet: (reportData: any) => api.post("/lost-found/lost", reportData),
-  reportFoundPet: (reportData: any) => api.post("/lost-found/found", reportData),
+  createReport: (reportData: any) => api.post("/lost-found", reportData),
   getAllReports: (params?: any) => api.get("/lost-found", { params }),
+  getUserReports: () => api.get("/lost-found/my-reports"),
   getReportById: (id: string) => api.get(`/lost-found/${id}`),
   updateReport: (id: string, reportData: any) => api.put(`/lost-found/${id}`, reportData),
+  deleteReport: (id: string) => api.delete(`/lost-found/${id}`),
   updateReportStatus: (id: string, statusData: any) => api.put(`/lost-found/${id}/status`, statusData),
-  uploadPetImages: (id: string, formData: FormData) => 
-    api.post(`/lost-found/${id}/images`, formData, {
+  uploadPetImages: (id: string, formData: FormData) => {
+    console.log('Calling uploadPetImages with ID:', id)
+    console.log('FormData contents:', Array.from(formData.entries()))
+    return api.post(`/lost-found/${id}/photos`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    }),
+    })
+  },
 }
 
 // Rescue Operations API
@@ -92,6 +96,7 @@ export const rescueAPI = {
   updateRescue: (id: string, rescueData: any) => api.put(`/rescue/${id}`, rescueData),
   joinRescue: (id: string) => api.post(`/rescue/${id}/join`),
   updateRescueStatus: (id: string, statusData: any) => api.put(`/rescue/${id}/status`, statusData),
+  getUserRescues: () => api.get("/rescue/my-reports"),
 }
 
 // Donations API

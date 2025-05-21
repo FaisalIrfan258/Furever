@@ -145,7 +145,7 @@ export default function DonationsPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="bg-gradient-to-r from-pink-500 to-purple-600 p-8 rounded-lg mb-8 text-white">
+      <div className="bg-rose-600 p-8 rounded-lg mb-8 text-white">
         <h1 className="text-4xl font-bold mb-2">Make a Difference Today</h1>
         <p className="text-xl">Your donation helps animals in need find their forever homes</p>
       </div>
